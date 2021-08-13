@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <% if (currentUser) { %>
+      <form action="/chitter?_method=DELETE" method="post">
+        <input id="sign-out" type="submit" value="sign out">
+      </form>
+    <% } else { %>
+      <a id="signin-link" href="/login">sign in</a>
+      <a id="signup-link" href="/registration">sign up</a>
+    <% } %>
+
+    <%- body %>
+  </body>
+</html>
