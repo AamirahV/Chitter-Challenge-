@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const port = 3000
 const methodOverride = require('method-override');
-const { User } = require('./models/user.js');
+const { User } = require('./models');
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session')
 
@@ -19,14 +19,10 @@ app.use(session({
     saveUninitialized: true,
   }))
 
-const registrationRouter = require('./routes/registration.js')
-app.use('/registration', registrationRouter)
 
-
-const chitterRouter = require('./routes/chitter.js')
-app.use('/chitter', chitterRouter)
 
 app.use(async (req, res, next) => {
+  console.log(User.id)
     if (req.session.userId) {
       res.locals.currentUser = await User.findOne({
         where: {
@@ -36,9 +32,15 @@ app.use(async (req, res, next) => {
     } else {
       res.locals.currentUser = undefined
     }
+    // console.log(User.id)
     res.locals.errors = []
     next()
   })
+
+const registrationRouter = require('./routes/registration.js')
+app.use('/registration', registrationRouter)
+const chitterRouter = require('./routes/chitter.js')
+app.use('/chitter', chitterRouter)
   
   const authenticator = (req, res, next) => {
     if (req.session.userId === undefined) {
